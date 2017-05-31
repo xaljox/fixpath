@@ -1,0 +1,91 @@
+{
+    // See https://go.microsoft.com/fwlink/?LinkId=733558
+    // for the documentation about the tasks.json format
+    "version": "0.1.0",
+    "command": "bash",
+    "args": [
+        "-c"
+    ],
+    "isShellCommand": true,
+    "showOutput": "always",
+    "suppressTaskName": true,
+    "options": {
+        "cwd": "${workspaceRoot}"
+    },
+    "tasks": [
+        {
+            "taskName": "make",
+            "args": [
+                "cd build; make -j4 -w 2>&1 | fixpath"
+            ],
+            "isBuildCommand": false,
+            "problemMatcher": {
+                "owner": "cpp",
+                "fileLocation": "absolute",
+                "pattern": {
+                    "regexp": "^(.*):(\\d+):(\\d+):\\s+(warning|error):\\s+(.*)$",
+                    "file": 1,
+                    "line": 2,
+                    "column": 3,
+                    "severity": 4,
+                    "message": 5
+                }
+            }
+        },
+        {
+            "taskName": "> make mac",
+            "args": [
+                "cd build_mac; make -j4 -w 2>&1 | fixpath"
+            ],
+            "isBuildCommand": true,
+            "problemMatcher": {
+                "owner": "cpp",
+                "fileLocation": "absolute",
+                "pattern": {
+                    "regexp": "^(.*):(\\d+):(\\d+):\\s+(warning|error):\\s+(.*)$",
+                    "file": 1,
+                    "line": 2,
+                    "column": 3,
+                    "severity": 4,
+                    "message": 5
+                }
+            }
+        },
+        {
+            "taskName": "clean",
+            "args": [
+                "cd build; make clean"
+            ]
+        },
+        {
+            "taskName": "clean mac",
+            "args": [
+                "cd build_mac; make clean"
+            ]
+        },
+        {
+            "taskName": "configure",
+            "args": [
+                "rm -rf build; mkdir build; cd build; ../configure"
+            ]
+        },
+        {
+            "taskName": "configure clang++",
+            "args": [
+                "rm -rf build; mkdir build; cd build; ../configure CXX=clang++"
+            ]
+        },
+        {
+            "taskName": "configure mac",
+            "args": [
+                "rm -rf build_mac; mkdir build_mac; cd build_mac; ../configure" 
+            ]
+        },
+        {
+            "taskName": "configure mac clang++",
+            "args": [
+                "rm -rf build_mac; mkdir build_mac; cd build_mac; ../configure CXX=clang++"
+            ]
+        }
+    ]
+}
