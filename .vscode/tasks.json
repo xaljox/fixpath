@@ -2,10 +2,6 @@
     // See https://go.microsoft.com/fwlink/?LinkId=733558
     // for the documentation about the tasks.json format
     "version": "0.1.0",
-    "command": "bash",
-    "args": [
-        "-c"
-    ],
     "isShellCommand": true,
     "showOutput": "always",
     "suppressTaskName": true,
@@ -29,56 +25,70 @@
     ],
     "tasks": [
         {
-            "taskName": "make",
-            "args": [
-                "cd build; make -j4 -w 2>&1 | fixpath"
-            ],
-            "isBuildCommand": false,
-            "problemMatcher": "$make-compile"
-        },
-        {
-            "taskName": "> make mac",
-            "args": [
-                "cd build_mac; make -j4 -w 2>&1 | fixpath"
-            ],
+            "taskName": "> make",
+            "command": "bash",
+            "windows": {
+                "args": ["-c", "cd build_win; make -j4 -w 2>&1 | fixpath"]
+            },
+            "linux": {
+                "args": ["-c", "cd build; make -j4 -w 2>&1 | fixpath"]
+            },
+            "osx": {
+                "args": ["-c", "cd build_mac; make -j4 -w 2>&1 | fixpath"]
+            },
             "isBuildCommand": true,
             "problemMatcher": "$make-compile"
         },
         {
             "taskName": "clean",
-            "args": [
-                "cd build; make clean"
-            ]
-        },
-        {
-            "taskName": "clean mac",
-            "args": [
-                "cd build_mac; make clean"
-            ]
+            "command": "bash",
+            "windows": {
+                "args": ["-c", "cd build_win; make clean"]
+            },
+            "linux": {
+                "args": ["-c", "cd build; make clean"]
+            },
+            "osx": {
+                "args": ["-c", "cd build_mac; make clean"]
+            }
         },
         {
             "taskName": "configure",
-            "args": [
+            "command": "bash",
+            "windows": {
+                "args": ["-c", 
+                "rm -rf build_win; mkdir build_win; cd build_win; ../configure"
+                ]
+            },
+            "linux": {
+                "args": ["-c", 
                 "rm -rf build; mkdir build; cd build; ../configure"
-            ]
+                ]
+            },
+            "osx": {
+                "args": ["-c", 
+                "rm -rf build_mac; mkdir build_mac; cd build_mac; ../configure"
+                ]
+            }
         },
         {
             "taskName": "configure clang++",
-            "args": [
+            "command": "bash",
+            "windows": {
+                "args": ["-c", 
+                "rm -rf build_win; mkdir build_win; cd build_win; ../configure CXX=clang++"
+                ]
+            },
+            "linux": {
+                "args": ["-c", 
                 "rm -rf build; mkdir build; cd build; ../configure CXX=clang++"
-            ]
-        },
-        {
-            "taskName": "configure mac",
-            "args": [
-                "rm -rf build_mac; mkdir build_mac; cd build_mac; ../configure" 
-            ]
-        },
-        {
-            "taskName": "configure mac clang++",
-            "args": [
+                ]
+            },
+            "osx": {
+                "args": ["-c", 
                 "rm -rf build_mac; mkdir build_mac; cd build_mac; ../configure CXX=clang++"
-            ]
+                ]
+            }
         }
     ]
 }
