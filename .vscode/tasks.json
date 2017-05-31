@@ -12,6 +12,21 @@
     "options": {
         "cwd": "${workspaceRoot}"
     },
+    "declares": [
+        {
+            "name": "make-compile",
+            "owner": "cpp",
+            "fileLocation": "absolute",
+            "pattern": {
+                "regexp": "^(.*):(\\d+):(\\d+):\\s+(warning|error):\\s+(.*)$",
+                "file": 1,
+                "line": 2,
+                "column": 3,
+                "severity": 4,
+                "message": 5
+            }
+        }
+    ],
     "tasks": [
         {
             "taskName": "make",
@@ -19,18 +34,7 @@
                 "cd build; make -j4 -w 2>&1 | fixpath"
             ],
             "isBuildCommand": false,
-            "problemMatcher": {
-                "owner": "cpp",
-                "fileLocation": "absolute",
-                "pattern": {
-                    "regexp": "^(.*):(\\d+):(\\d+):\\s+(warning|error):\\s+(.*)$",
-                    "file": 1,
-                    "line": 2,
-                    "column": 3,
-                    "severity": 4,
-                    "message": 5
-                }
-            }
+            "problemMatcher": "$make-compile"
         },
         {
             "taskName": "> make mac",
@@ -38,18 +42,7 @@
                 "cd build_mac; make -j4 -w 2>&1 | fixpath"
             ],
             "isBuildCommand": true,
-            "problemMatcher": {
-                "owner": "cpp",
-                "fileLocation": "absolute",
-                "pattern": {
-                    "regexp": "^(.*):(\\d+):(\\d+):\\s+(warning|error):\\s+(.*)$",
-                    "file": 1,
-                    "line": 2,
-                    "column": 3,
-                    "severity": 4,
-                    "message": 5
-                }
-            }
+            "problemMatcher": "$make-compile"
         },
         {
             "taskName": "clean",
