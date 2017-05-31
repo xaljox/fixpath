@@ -36,6 +36,7 @@ int main(int argc, char** argv)
     bool dropNonCompilerLine = true;
     bool dropCompilerLine = false;
     bool dropDirectoryLine = true;
+    bool addReadyLine = true;
     
     bool errorWarningMode = false;
     
@@ -110,6 +111,10 @@ int main(int argc, char** argv)
         }
         
         cout << flush;
+    }
+    if (addReadyLine)
+    {
+        cout << "-------------------- Ready --------------------" << endl << flush;
     }
     
     return 0;
