@@ -1,4 +1,5 @@
 #include <stdlib.h>
+#include <stdio.h>
 #include <iostream>
 #include <regex.h>
 #include <getopt.h>

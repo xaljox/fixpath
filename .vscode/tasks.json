@@ -28,13 +28,13 @@
             "taskName": "> make",
             "command": "bash",
             "windows": {
-                "args": ["-c", "cd build_win; make -j4 -w 2>&1 | fixpath -xd"]
+                "args": ["-c", "cd build_win; make -j4 -w 2>&1 | fixpath -xdr"]
             },
             "linux": {
-                "args": ["-c", "cd build; make -j4 -w 2>&1 | fixpath -xd"]
+                "args": ["-c", "cd build; make -j4 -w 2>&1 | fixpath -xdr"]
             },
             "osx": {
-                "args": ["-c", "cd build_mac; make -j4 -w 2>&1 | fixpath -xd"]
+                "args": ["-c", "cd build_mac; make -j4 -w 2>&1 | fixpath -xdr"]
             },
             "isBuildCommand": true,
             "problemMatcher": "$make-compile"
