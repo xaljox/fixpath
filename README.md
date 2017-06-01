@@ -26,7 +26,7 @@ the resolving of the file names in some IDE's fails. The reported error/warning
 location is relative to the build directory which varies. This is resolved by
 processing the Entering and Leaving directory statements (use make -w). With
 this information the paths are made absolute. Normally fixpath is used in the
-folowing manner: 'make -j4 -w 2>&1 | fixpath' It processes the stdin and puts
+folowing manner: `make -j4 -w 2>&1 | fixpath` It processes the stdin and puts
 the altered output to stdout. There are options to perform some filtering at the
 same time, these options are described above. Lines starting with: 
 'clang', 'gcc', 'clang++', 'g++', 'c++', 'CC' and 'GCC' are classified as
