@@ -6,7 +6,7 @@ processing the Entering and Leaving directory statements (use make -w). With
 this information the paths are made absolute. Normally fixpath is used in the
 following manner: `make -j4 -w 2>&1 | fixpath` It processes the stdin and puts
 the altered output to stdout. There are options to perform some filtering at the
-same time, these options are described above. Lines starting with: 'clang',
+same time, these options are described below. Lines starting with: 'clang',
 'gcc', 'clang++', 'g++', 'c++', 'CC' and 'GCC' are classified as compiler lines.
 
 ### Usage: 
