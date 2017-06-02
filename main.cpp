@@ -4,6 +4,7 @@
 #include <regex.h>
 #include <getopt.h>
 #include "FixPathInclude.h"
+#include "config.h"
 
 
 class RegEx : public regex_t
@@ -146,7 +147,8 @@ const char* Option::argname[64];
 
 int main(int argc, char** argv)
 {
-    bool compressLine = 0;
+    bool removeOptionsFromLine = 0;
+    bool removeSameOptionsFromLine = 0;
     bool skipOtherLine = 0;
     bool skipCompilerLine = 0;
     bool skipDirectoryLine = 0;
@@ -157,8 +159,10 @@ int main(int argc, char** argv)
             "Print this help."), 
         Option("version",         no_argument,        0,  'v', 
             "Shows the current version of fixpath."),
-        Option("remove_common",   no_argument,        0,  'x', 
-            "Removes common parts from recognized compiler line by removing the options from the line."),
+        Option("remove_options",   no_argument,        0,  'x', 
+            "Removes the options from recognized compiler lines."),
+        Option("remove_same_opt",  no_argument,        0,  's', 
+            "Removes the options from recognized compiler line if they are the same as on the previous compiler line."),
         Option("skip_other",      no_argument,        0,  'o', 
             "Skip lines that are not recognized as compiler or Entering/Leaving directory lines."),
         Option("skip_compiler",   no_argument,        0,  'c', 
@@ -183,7 +187,12 @@ int main(int argc, char** argv)
         switch (opt) 
         {
             case 'x' : 
-                compressLine = true; 
+                removeOptionsFromLine = true; 
+                removeSameOptionsFromLine = false; 
+                break;
+            case 's' : 
+                removeSameOptionsFromLine = true; 
+                removeOptionsFromLine = false; 
                 break;
             case 'o' : 
                 skipOtherLine = true; 
@@ -215,7 +224,7 @@ int main(int argc, char** argv)
                 break;
                 */
             case 'v' : 
-                fprintf(stdout, "fixpath: version 0.9\n");
+                fprintf(stdout, "%s\n", PACKAGE_STRING);
                 exit(0);
                 break;
             case ':':
@@ -229,7 +238,7 @@ int main(int argc, char** argv)
     }
 
 /*    
-    cout << "compressLine: " << compressLine << endl;
+    cout << "removeOptionsFromLine: " << removeOptionsFromLine << endl;
     cout << "skipOtherLine: " << skipOtherLine << endl;
     cout << "skipCompilerLine: " << skipCompilerLine << endl;
     cout << "skipDirectoryLine: " << skipDirectoryLine << endl;
@@ -248,6 +257,8 @@ int main(int argc, char** argv)
     
     FixPath fixPath;
     
+    string common;
+    string prevCommon;
     regmatch_t match[10];
     const int maxLineLen = 4096;
     char line[maxLineLen];
@@ -284,18 +295,32 @@ int main(int argc, char** argv)
         else if (regexec(&regex_com, line, 7, match, 0) == 0)
         {
             errorWarningMode = false;
-            if (skipCompilerLine == 0)
+            if (skipCompilerLine == false)
             {
-                if (compressLine)
+                if (removeOptionsFromLine || removeSameOptionsFromLine)
                 {
-                    line[match[1].rm_eo] = '\0';
-                    cout << &line[match[1].rm_so];
-            
-                    if (match[6].rm_so != -1)
+                    line[match[2].rm_eo] = '\0';
+                    if (removeSameOptionsFromLine)
                     {
-                        cout << " ... " << &line[match[6].rm_so];
+                        common = &line[match[2].rm_so];
                     }
-                    cout << endl;
+            
+                    if (removeOptionsFromLine || prevCommon == common)
+                    {
+                        line[match[1].rm_eo] = '\0';
+                        cout << &line[match[1].rm_so];
+                
+                        if (match[6].rm_so != -1)
+                        {
+                            cout << " ... " << &line[match[6].rm_so];
+                        }
+                        cout << endl;
+                    }
+                    else
+                    {
+                        cout << line << endl;
+                        prevCommon = common;
+                    }
                 }
                 else
                 {

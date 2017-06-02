@@ -6,9 +6,11 @@ fixpath --longoptions -hvxocdamr
     long option          arg           Description
   --help            (-h)               Print this help.
   --version         (-v)               Shows the current version of fixpath.
-  --remove_common   (-x)               Removes common parts from recognized
-                                       compiler line by removing the options
-                                       from the line.
+  --remove_options  (-x)               Removes the options from recognized
+                                       compiler lines.
+  --remove_same_opt (-s)               Removes the options from recognized
+                                       compiler line if they are the same as on
+                                       the previous compiler line.
   --skip_other      (-o)               Skip lines that are not recognized as
                                        compiler or Entering/Leaving directory
                                        lines.
