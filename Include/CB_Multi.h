@@ -769,7 +769,7 @@ void ClassFrom::Sort##NameTo(int (*comp)(ClassTo*, ClassTo*))\
         for (index = 1; index <= objectCount; index++)\
             pointerArray[index]->SerializeRelations(archive, pointerArray);\
 \
-        delete pointerArray;\
+        delete[] pointerArray;\
     }
 
 #define WRITE_MULTI_ACTIVE(ClassFrom, NameFrom, ClassTo, NameTo) \
