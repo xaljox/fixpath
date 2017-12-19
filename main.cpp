@@ -6,6 +6,8 @@
 #include "FixPathInclude.h"
 #include "config.h"
 
+#define __STR(x) #x
+#define DEFAULT_LINE_LENGTH 4096
 
 class RegEx : public regex_t
 {
@@ -153,6 +155,8 @@ int main(int argc, char** argv)
     bool skipCompilerLine = 0;
     bool skipDirectoryLine = 0;
     bool appendReadyLine = 0;
+    long maxLineLen = DEFAULT_LINE_LENGTH;
+
     
     static Option options[] = { 
         Option("help",            no_argument,        0,  'h', 
@@ -175,6 +179,8 @@ int main(int argc, char** argv)
             "Skip all lines from output except those recognized as compiler lines."),
         Option("append_ready",    no_argument,        0,  'r', 
             "Append a line at end, so its clear we are ready."),
+        Option("line_length",     required_argument,  0,  'l',
+            "Maximum line length. Default "  __STR(DEFAULT_LINE_LENGTH)  "."),
 //        Option("input",           required_argument,  0,  'f', "Use infile instead of stdin.", "infile"),
 //        Option("output",          required_argument,  0,  'o', "Use outfile instead of stdout.", "infile"),
         Option(0,                 0,                  0,  0)
@@ -214,6 +220,12 @@ int main(int argc, char** argv)
                 break;
             case 'r' : 
                 appendReadyLine = true; 
+                break;
+            case 'l' :
+                maxLineLen = strtol(optarg, NULL, 0);
+                if (maxLineLen < 0) {
+                    maxLineLen = DEFAULT_LINE_LENGTH;
+                }
                 break;
             /*
             case 'f' : 
@@ -260,8 +272,7 @@ int main(int argc, char** argv)
     string common;
     string prevCommon;
     regmatch_t match[10];
-    const int maxLineLen = 4096;
-    char line[maxLineLen];
+    char* line = new char[maxLineLen];
     while (cin.getline(line, maxLineLen))
     {
         if (regexec(&regex_we, line, 6, match, 0) == 0)
@@ -347,6 +358,7 @@ int main(int argc, char** argv)
     {
         cout << "-------------------- Ready --------------------" << endl << flush;
     }
+    delete[] line;
     
     return 0;
 }
