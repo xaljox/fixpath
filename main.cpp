@@ -257,7 +257,7 @@ int main(int argc, char** argv)
     cout << "appendReadyLine: " << appendReadyLine << endl;
 */
     // Recognize the warning/error line
-    RegEx regex_we("^(.*):([0-9]+):([0-9]+): +(warning|error): +(.*)$");
+    RegEx regex_we("^(.*):([0-9]+):([0-9]+): +(note|warning|error|fatal error): +(.*)$");
 
     // make: Entering|Leaving directory `/Users/xaljox/GitHub/bash/bash-4.4/build_mac'
     RegEx regex_dir("^make(\\[[0-9]+\\])?: ((Entering)|(Leaving)) directory ['`](.*)'");
